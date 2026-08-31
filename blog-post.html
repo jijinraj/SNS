@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" id="page-description" content="Suck N' Shine Journal article." />
+  <meta name="theme-color" content="#050505" />
+  <title>Journal Article | Suck N' Shine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050505;
+      --card: #101010;
+      --text: #f4f4f1;
+      --muted: #afafaa;
+      --line: #232323;
+      --line-strong: #3a3a3a;
+      --max: 1180px;
+      --reading: 820px;
+      --radius: 24px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; background: var(--bg); }
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at 80% 0%, rgba(255,255,255,.04), transparent 24rem), var(--bg);
+      color: var(--text);
+      font-family: 'Poppins', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    .shell { width: min(calc(100% - 40px), var(--max)); margin-inline: auto; }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+      background: rgba(5,5,5,.78);
+      backdrop-filter: blur(18px);
+    }
+
+    .nav {
+      min-height: 84px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .wordmark {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: flex-start;
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    .wordmark-line { display: inline-flex; align-items: baseline; gap: 6px; line-height: 1; }
+    .wordmark-text { font-weight: 300; letter-spacing: -.05em; line-height: 1; }
+    .wordmark-main { color: #FAFAFA; }
+    .wordmark-mid { color: #AAAAAB; }
+    .wordmark-glare {
+      display: inline-block;
+      color: #ffffff;
+      line-height: 1;
+      transform: translateY(-0.42em);
+      text-shadow: 0 0 10px rgba(255,255,255,.25), 0 0 20px rgba(255,255,255,.18);
+    }
+
+    .wordmark-location {
+      margin-top: 9px;
+      color: #AAAAAB;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: .34em;
+      text-transform: uppercase;
+      line-height: 1;
+      padding-left: .34em;
+    }
+
+    .wordmark-sm .wordmark-text { font-size: 28px; }
+    .wordmark-sm .wordmark-glare { font-size: 16px; margin-left: -2px; }
+    .wordmark-footer .wordmark-text { font-size: 24px; }
+    .wordmark-footer .wordmark-glare { font-size: 14px; }
+    .wordmark-footer .wordmark-location { font-size: 8px; margin-top: 7px; }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .nav-links a:not(.button):hover { color: var(--text); }
+
+    .button {
+      min-height: 48px;
+      padding: 0 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border-radius: 999px;
+      border: 1px solid var(--text);
+      background: var(--text);
+      color: var(--bg);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: .01em;
+      transition: transform .25s ease, border-color .25s ease;
+    }
+
+    .button:hover { transform: translateY(-2px); }
+    .button.secondary { background: transparent; color: var(--text); border-color: var(--line-strong); }
+    .button.secondary:hover { border-color: var(--text); }
+
+    .article-hero { padding: 92px 0 58px; }
+    .kicker-row { display: flex; align-items: center; gap: 18px; }
+    .eyebrow {
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .2em;
+      font-size: 11px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .hairline { flex: 1; height: 1px; background: var(--line); }
+
+    .article-title {
+      max-width: 1080px;
+      margin-top: 28px;
+      font-size: clamp(54px, 8.7vw, 112px);
+      line-height: .9;
+      letter-spacing: -.085em;
+      font-weight: 600;
+    }
+
+    .article-deck {
+      max-width: 760px;
+      margin-top: 32px;
+      color: var(--muted);
+      font-size: clamp(17px, 2vw, 22px);
+      line-height: 1.75;
+      font-weight: 300;
+    }
+
+    .article-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 28px;
+      margin-top: 30px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .cost-grid {
+      margin-top: 54px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .cost-item { padding: 28px 24px 30px 0; min-height: 142px; }
+    .cost-item + .cost-item { border-left: 1px solid var(--line); padding-left: 24px; }
+    .cost-label { color: var(--muted); text-transform: uppercase; letter-spacing: .16em; font-size: 10px; font-weight: 500; }
+    .cost-value { margin-top: 10px; font-size: clamp(34px, 4vw, 58px); line-height: 1; letter-spacing: -.055em; font-weight: 500; }
+    .cost-note { margin-top: 9px; color: var(--muted); font-size: 12px; line-height: 1.55; }
+
+    .article { border-top: 1px solid var(--line); }
+    .article-section { padding: 88px 0; border-bottom: 1px solid var(--line); }
+    .article-section-inner {
+      display: grid;
+      grid-template-columns: minmax(180px, .42fr) minmax(0, 1.58fr);
+      gap: 54px;
+      align-items: start;
+    }
+
+    .section-index { position: sticky; top: 112px; }
+    .section-number { color: #666; font-size: 12px; letter-spacing: .18em; }
+    .section-label { margin-top: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .18em; font-size: 10px; }
+
+    .article-copy { max-width: var(--reading); }
+    .article-copy h2 {
+      font-size: clamp(36px, 5vw, 64px);
+      line-height: .98;
+      letter-spacing: -.055em;
+      font-weight: 500;
+    }
+    .article-copy h3 {
+      margin-top: 42px;
+      font-size: 23px;
+      line-height: 1.25;
+      letter-spacing: -.025em;
+      font-weight: 500;
+    }
+    .article-copy p {
+      margin-top: 22px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.9;
+      font-weight: 300;
+    }
+    .article-copy strong { color: var(--text); font-weight: 500; }
+    .article-copy ul {
+      margin-top: 24px;
+      padding: 0;
+      list-style: none;
+      border-top: 1px solid var(--line);
+    }
+    .article-copy li {
+      position: relative;
+      padding: 17px 0 17px 28px;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.7;
+      font-weight: 300;
+    }
+    .article-copy li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--text);
+    }
+
+    .formula {
+      margin-top: 34px;
+      padding: clamp(28px, 5vw, 48px);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(145deg, rgba(255,255,255,.035), transparent 42%), var(--card);
+    }
+    .formula-line {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .formula-line:first-child { padding-top: 0; }
+    .formula-line:last-child { border-bottom: 0; padding-bottom: 0; }
+    .formula-name { color: var(--muted); font-size: 14px; }
+    .formula-price { font-size: 25px; font-weight: 500; letter-spacing: -.03em; }
+    .formula-total .formula-name, .formula-total .formula-price { color: var(--text); }
+    .formula-total .formula-price { font-size: 42px; }
+
+    .checklist {
+      margin-top: 30px;
+      display: grid;
+      gap: 0;
+      border-top: 1px solid var(--line);
+    }
+    .check-item {
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      gap: 16px;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .check-mark { color: var(--text); font-size: 15px; }
+    .check-item p { margin: 0; font-size: 15px; }
+
+    .budget-table {
+      width: 100%;
+      margin-top: 34px;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    .budget-table th,
+    .budget-table td {
+      padding: 18px 14px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+    .budget-table th {
+      color: var(--muted);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .14em;
+      font-weight: 500;
+    }
+    .budget-table td:last-child { font-weight: 500; color: var(--text); }
+    .budget-table td { color: var(--muted); }
+
+    .callout {
+      margin-top: 34px;
+      padding: 28px 30px;
+      border-left: 2px solid #FAFAFA;
+      background: rgba(255,255,255,.025);
+    }
+    .callout p { margin: 0; color: var(--text); font-size: 15px; line-height: 1.8; }
+
+    .disclaimer {
+      margin-top: 28px;
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+      color: #7f7f7b !important;
+      font-size: 12px !important;
+      line-height: 1.75 !important;
+    }
+
+    .cta {
+      padding: 108px 0 118px;
+      text-align: center;
+    }
+    .cta h2 {
+      max-width: 900px;
+      margin: 0 auto;
+      font-size: clamp(46px, 7vw, 84px);
+      line-height: .94;
+      letter-spacing: -.07em;
+      font-weight: 500;
+    }
+    .cta p { max-width: 620px; margin: 24px auto 0; color: var(--muted); line-height: 1.8; font-weight: 300; }
+    .cta-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+
+    .footer { border-top: 1px solid var(--line); padding: 30px 0 38px; }
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .footer-links { display: flex; gap: 18px; flex-wrap: wrap; color: var(--muted); }
+    .footer-links a { display: inline-flex; align-items: center; gap: 7px; transition: color .2s ease; }
+    .footer-links a:hover { color: var(--text); }
+    .footer-icon {
+      width: 15px; height: 15px; flex: 0 0 15px;
+      stroke: currentColor; fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; opacity: .92;
+    }
+    .footer-icon.fill { fill: currentColor; stroke: none; }
+
+    /* Same slow, smooth, repeatable motion language as the main site. */
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition:
+        opacity 1.15s cubic-bezier(.22,.61,.36,1),
+        transform 1.15s cubic-bezier(.22,.61,.36,1),
+        color 1.25s cubic-bezier(.22,.61,.36,1);
+      will-change: opacity, transform;
+    }
+    .reveal.in-view { opacity: 1; transform: translateY(0); }
+    .article-title.reveal { color: rgba(250,250,250,.28); transform: translateY(28px); }
+    .article-title.reveal.in-view { color: #FAFAFA; }
+
+    @media (max-width: 900px) {
+      .cost-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .cost-item:nth-child(3) { border-left: 0; border-top: 1px solid var(--line); padding-left: 0; }
+      .cost-item:nth-child(4) { border-top: 1px solid var(--line); }
+      .article-section-inner { grid-template-columns: 1fr; gap: 24px; }
+      .section-index { position: static; display: flex; align-items: center; gap: 14px; }
+      .section-label { margin: 0; }
+    }
+
+    @media (max-width: 820px) {
+      .shell { width: min(calc(100% - 28px), var(--max)); }
+      .nav { min-height: 74px; }
+      .nav-links > a:not(.button) { display: none; }
+      .nav-links .button { min-height: 42px; padding-inline: 15px; }
+      .wordmark-sm .wordmark-text { font-size: 22px; }
+      .wordmark-sm .wordmark-glare { font-size: 12px; }
+      .article-hero { padding: 70px 0 44px; }
+      .article-title { font-size: clamp(48px, 15vw, 76px); }
+      .article-section { padding: 68px 0; }
+      .cost-grid { grid-template-columns: 1fr; }
+      .cost-item, .cost-item + .cost-item, .cost-item:nth-child(3), .cost-item:nth-child(4) {
+        border-left: 0;
+        border-top: 1px solid var(--line);
+        padding: 22px 0;
+        min-height: auto;
+      }
+      .cost-item:first-child { border-top: 0; }
+      .formula-line { align-items: flex-end; }
+      .budget-table { font-size: 12px; }
+      .budget-table th, .budget-table td { padding: 14px 8px; }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition: none !important; }
+      .reveal { opacity: 1 !important; transform: none !important; }
+      .article-title.reveal { color: #FAFAFA !important; }
+    }
+
+
+    /* Shared navigation refinements */
+    .wordmark-glare { transform: translateY(-0.42em); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .nav-links a:not(.button):hover { color: var(--text); }
+    .book-label-short { display: none; }
+
+    .menu-toggle {
+      width: 42px;
+      height: 42px;
+      padding: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 5px;
+      flex: 0 0 42px;
+      border: 1px solid var(--text);
+      border-radius: 999px;
+      background: var(--text);
+      color: var(--bg);
+      cursor: pointer;
+      transition: transform .2s ease, opacity .2s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .menu-toggle:hover { transform: translateY(-2px); }
+    .menu-toggle:focus-visible { outline: 2px solid var(--text); outline-offset: 4px; }
+    .menu-bar {
+      display: block;
+      width: 15px;
+      height: 1.5px;
+      border-radius: 999px;
+      background: currentColor;
+      transform-origin: center;
+      transition: transform .32s cubic-bezier(.22,.61,.36,1), opacity .2s ease;
+    }
+    .menu-toggle[aria-expanded="true"] .menu-bar:first-child { transform: translateY(3.25px) rotate(45deg); }
+    .menu-toggle[aria-expanded="true"] .menu-bar:last-child { transform: translateY(-3.25px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      background: rgba(5,5,5,.94);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      box-shadow: 0 24px 54px rgba(0,0,0,.32);
+    }
+    .mobile-menu-inner { padding-top: 10px; padding-bottom: 18px; }
+    .mobile-menu a {
+      min-height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 400;
+      transition: color .2s ease, padding-left .25s ease;
+    }
+    .mobile-menu a:last-child { border-bottom: 0; }
+    .mobile-menu a:hover { color: var(--text); padding-left: 4px; }
+    .mobile-menu a span { color: #666; font-size: 12px; }
+
+    .footer-icon {
+      width: 15px;
+      height: 15px;
+      flex: 0 0 15px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.7;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      opacity: .92;
+    }
+    .footer-icon.fill { fill: currentColor; stroke: none; }
+    .footer-links a { display: inline-flex; align-items: center; gap: 7px; }
+
+    @media (max-width: 820px) {
+      .nav-links { gap: 8px; }
+      .nav-links > a:not(.button) { display: none !important; }
+      .nav-links .nav-book { min-height: 42px; padding: 0 15px; }
+      .menu-toggle { display: inline-flex; }
+      .mobile-menu.is-open { display: block; animation: menuReveal .32s cubic-bezier(.22,.61,.36,1) both; }
+    }
+
+    @media (max-width: 420px) {
+      .book-label-full { display: none; }
+      .book-label-short { display: inline; }
+      .nav-links .nav-book { padding: 0 13px; }
+      .wordmark-sm .wordmark-text { font-size: 20px; }
+      .wordmark-sm .wordmark-glare { font-size: 11px; }
+    }
+
+    @media (max-width: 350px) {
+      .wordmark-sm .wordmark-text { font-size: 18px; }
+      .nav-links .nav-book { padding: 0 11px; }
+      .nav-links { gap: 6px; }
+      .menu-toggle { width: 40px; height: 40px; flex-basis: 40px; }
+    }
+
+    @keyframes menuReveal {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="shell nav">
+      <a class="wordmark wordmark-sm" href="./index.html" aria-label="Suck N’ Shine home">
+        <span class="wordmark-line">
+          <span class="wordmark-text"><span class="wordmark-main">Suck</span> <span class="wordmark-mid">N’</span> <span class="wordmark-main">Shine</span></span>
+          <span class="wordmark-glare" aria-hidden="true">✦</span>
+        </span>
+      </a>
+
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="./index.html#service">Service</a>
+        <a href="./index.html#pricing">Pricing</a>
+        <a href="./index.html#before-booking">Before booking</a>
+        <a href="./blog.html">Journal</a>
+        <a href="./terms.html">Terms</a>
+        <a class="button nav-book booking-link" href="https://forms.gle/1j9kqJVVQi6NE9RS9" target="_blank" rel="noopener"><span class="book-label-full">Book now</span><span class="book-label-short">Book</span> ↗</a>
+        <button class="menu-toggle" type="button" aria-label="Open navigation menu" aria-controls="mobile-menu" aria-expanded="false">
+          <span class="menu-bar"></span>
+          <span class="menu-bar"></span>
+        </button>
+      </nav>
+    </div>
+
+    <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+      <div class="shell mobile-menu-inner">
+        <a href="./index.html#service">Service <span aria-hidden="true">↗</span></a>
+        <a href="./index.html#pricing">Pricing <span aria-hidden="true">↗</span></a>
+        <a href="./index.html#before-booking">Before booking <span aria-hidden="true">↗</span></a>
+        <a href="./blog.html">Journal <span aria-hidden="true">↗</span></a>
+        <a href="./terms.html">Terms &amp; Conditions <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="article-hero">
+      <div class="shell">
+        <div class="kicker-row reveal">
+          <p class="eyebrow" id="post-kicker">Suck N’ Shine Journal</p>
+          <span class="hairline"></span>
+        </div>
+        <h1 class="article-title reveal" id="post-title">Loading article…</h1>
+        <p class="article-deck reveal" id="post-summary">A Suck N’ Shine Journal article.</p>
+        <div class="article-meta reveal" id="post-meta">
+          <span>Journal</span>
+          <span>Cambridge</span>
+        </div>
+      </div>
+    </section>
+
+    <article class="article">
+      <div id="post-sections">
+        <section class="article-section">
+          <div class="shell article-section-inner">
+            <aside class="section-index reveal">
+              <span class="section-number">00</span>
+              <span class="section-label">Loading</span>
+            </aside>
+            <div class="article-copy">
+              <h2 class="reveal">Loading the article.</h2>
+              <p class="reveal">If this message remains visible, return to the Journal and choose another article.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </article>
+
+    <section class="cta">
+      <div class="shell">
+        <h2 class="reveal">Keep the everyday mess under control.</h2>
+        <p class="reveal">Our £15 Quick Clean is a simple interior maintenance clean for seats, floors, mats, dashboard and centre-console surfaces.</p>
+        <div class="cta-actions reveal">
+          <a class="button booking-link" href="https://forms.gle/1j9kqJVVQi6NE9RS9" target="_blank" rel="noopener">Book the £15 Quick Clean ↗</a>
+          <a class="button secondary" href="./blog.html">Back to Journal</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="shell footer-inner">
+      <a class="wordmark wordmark-footer" href="./index.html" aria-label="Suck N’ Shine home">
+        <span class="wordmark-line">
+          <span class="wordmark-text"><span class="wordmark-main">Suck</span> <span class="wordmark-mid">N’</span> <span class="wordmark-main">Shine</span></span>
+          <span class="wordmark-glare" aria-hidden="true">✦</span>
+        </span>
+        <span class="wordmark-location">Cambridge</span>
+      </a>
+
+      <div class="footer-links" aria-label="Footer links">
+        <a href="https://instagram.com/yourhandle" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg class="footer-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1"></circle></svg>
+          <span>Instagram</span>
+        </a>
+        <a href="https://facebook.com/yourpage" target="_blank" rel="noopener" aria-label="Facebook">
+          <svg class="footer-icon fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.7 21v-8h2.7l.4-3h-3.1V8.1c0-.9.3-1.5 1.6-1.5H17V3.9c-.3 0-1.3-.1-2.4-.1-2.4 0-4.1 1.5-4.1 4.2V10H8v3h2.5v8h3.2Z"></path></svg>
+          <span>Facebook</span>
+        </a>
+        <a href="https://wa.me/447000000000" target="_blank" rel="noopener" aria-label="WhatsApp">
+          <svg class="footer-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5a8 8 0 0 1-11.7 7L4 20l1.5-4.1A8 8 0 1 1 20 11.5Z"></path><path d="M9.2 8.3c.2-.4.4-.4.7-.4h.5c.1 0 .3 0 .4.3l.8 1.9c.1.2 0 .4-.1.6l-.6.8c-.1.2-.2.3 0 .6.3.6 1.5 2.4 3.7 3.3.3.1.5.1.7-.1l.9-1c.2-.2.4-.2.6-.1l1.8.9c.3.1.4.2.4.4 0 .2-.1 1.2-.6 1.8-.5.6-1.3.9-2 .9-.5 0-1.1-.1-2.6-.8-2.4-1-4.1-3.4-4.3-3.7-.2-.3-1-1.4-1-2.7 0-1.3.7-2 .9-2.3Z"></path></svg>
+          <span>WhatsApp</span>
+        </a>
+        <a href="mailto:hello@sucknshine.co.uk" aria-label="Email">
+          <svg class="footer-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="m4 7 8 6 8-6"></path></svg>
+          <span>Email</span>
+        </a>
+        <a href="./blog.html" aria-label="Journal">
+          <svg class="footer-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v16H5z"></path><path d="M8 8h8"></path><path d="M8 12h8"></path><path d="M8 16h5"></path></svg>
+          <span>Journal</span>
+        </a>
+        <a href="./terms.html" aria-label="Terms and Conditions">
+          <svg class="footer-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l3 3v15H6z"></path><path d="M14 3v4h4"></path><path d="M9 12h6"></path><path d="M9 16h6"></path></svg>
+          <span>Terms</span>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+<script>
+    (() => {
+      const toggle = document.querySelector('.menu-toggle');
+      const menu = document.getElementById('mobile-menu');
+      if (!toggle || !menu) return;
+
+      const closeMenu = () => {
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.setAttribute('aria-label', 'Open navigation menu');
+        menu.setAttribute('aria-hidden', 'true');
+        menu.classList.remove('is-open');
+      };
+
+      const openMenu = () => {
+        toggle.setAttribute('aria-expanded', 'true');
+        toggle.setAttribute('aria-label', 'Close navigation menu');
+        menu.setAttribute('aria-hidden', 'false');
+        menu.classList.add('is-open');
+      };
+
+      toggle.addEventListener('click', () => {
+        toggle.getAttribute('aria-expanded') === 'true' ? closeMenu() : openMenu();
+      });
+
+      menu.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
+      document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeMenu(); });
+      document.addEventListener('click', (event) => {
+        if (!menu.classList.contains('is-open')) return;
+        if (!menu.contains(event.target) && !toggle.contains(event.target)) closeMenu();
+      });
+      window.addEventListener('resize', () => { if (window.innerWidth > 820) closeMenu(); });
+    })();
+  </script>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add('in-view');
+        else entry.target.classList.remove('in-view');
+      });
+    }, { threshold: 0.14, rootMargin: '0px 0px -8% 0px' });
+
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+
+    const escapeText = (value) => String(value ?? '');
+
+    function makeSection(section, index) {
+      const wrapper = document.createElement('section');
+      wrapper.className = 'article-section';
+
+      const inner = document.createElement('div');
+      inner.className = 'shell article-section-inner';
+
+      const aside = document.createElement('aside');
+      aside.className = 'section-index reveal';
+      const number = document.createElement('span');
+      number.className = 'section-number';
+      number.textContent = String(index + 1).padStart(2, '0');
+      const label = document.createElement('span');
+      label.className = 'section-label';
+      label.textContent = section.label || 'Journal';
+      aside.append(number, label);
+
+      const copy = document.createElement('div');
+      copy.className = 'article-copy';
+      if (section.heading) {
+        const h2 = document.createElement('h2');
+        h2.className = 'reveal';
+        h2.textContent = escapeText(section.heading);
+        copy.appendChild(h2);
+      }
+      (Array.isArray(section.paragraphs) ? section.paragraphs : []).forEach((paragraph) => {
+        const p = document.createElement('p');
+        p.className = 'reveal';
+        p.textContent = escapeText(paragraph);
+        copy.appendChild(p);
+      });
+      if (Array.isArray(section.list) && section.list.length) {
+        const ul = document.createElement('ul');
+        ul.className = 'reveal';
+        section.list.forEach((item) => {
+          const li = document.createElement('li');
+          li.textContent = escapeText(item);
+          ul.appendChild(li);
+        });
+        copy.appendChild(ul);
+      }
+      if (section.callout) {
+        const callout = document.createElement('div');
+        callout.className = 'callout reveal';
+        const p = document.createElement('p');
+        p.textContent = escapeText(section.callout);
+        callout.appendChild(p);
+        copy.appendChild(callout);
+      }
+
+      inner.append(aside, copy);
+      wrapper.appendChild(inner);
+      return wrapper;
+    }
+
+    async function loadPost() {
+      const slug = new URLSearchParams(window.location.search).get('slug');
+      const sectionsTarget = document.getElementById('post-sections');
+      if (!slug || !sectionsTarget) return;
+
+      try {
+        const response = await fetch('./blogs.json', { cache: 'no-store' });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = await response.json();
+        const post = (Array.isArray(data.posts) ? data.posts : []).find((item) => item && item.published === true && item.slug === slug);
+        if (!post) throw new Error('Post not found');
+
+        document.title = `${post.title} | Suck N' Shine`;
+        const description = document.getElementById('page-description');
+        if (description) description.setAttribute('content', post.summary || 'Suck N\' Shine Journal article.');
+        document.getElementById('post-title').textContent = post.title || 'Journal article';
+        document.getElementById('post-summary').textContent = post.summary || '';
+        document.getElementById('post-kicker').textContent = `Suck N’ Shine Journal · ${post.category || 'Car care'}`;
+        document.getElementById('post-meta').innerHTML = '';
+        [post.category || 'Journal', 'Cambridge', post.readTime || 'Quick read'].forEach((value) => {
+          const span = document.createElement('span');
+          span.textContent = value;
+          document.getElementById('post-meta').appendChild(span);
+        });
+
+        sectionsTarget.innerHTML = '';
+        const sections = Array.isArray(post.sections) ? post.sections : [];
+        sections.forEach((section, index) => sectionsTarget.appendChild(makeSection(section, index)));
+        sectionsTarget.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+      } catch (error) {
+        document.getElementById('post-title').textContent = 'Article not found.';
+        document.getElementById('post-summary').textContent = 'This Journal entry is unavailable or has not been published yet.';
+        console.warn('JSON blog could not be loaded:', error);
+      }
+    }
+
+    loadPost();
+  </script>
+
+
+  <script>
+    (() => {
+      const toggle = document.querySelector('.menu-toggle');
+      const menu = document.getElementById('mobile-menu');
+      if (!toggle || !menu) return;
+
+      const closeMenu = () => {
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.setAttribute('aria-label', 'Open navigation menu');
+        menu.setAttribute('aria-hidden', 'true');
+        menu.classList.remove('is-open');
+      };
+
+      const openMenu = () => {
+        toggle.setAttribute('aria-expanded', 'true');
+        toggle.setAttribute('aria-label', 'Close navigation menu');
+        menu.setAttribute('aria-hidden', 'false');
+        menu.classList.add('is-open');
+      };
+
+      toggle.addEventListener('click', () => {
+        toggle.getAttribute('aria-expanded') === 'true' ? closeMenu() : openMenu();
+      });
+
+      menu.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
+      document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeMenu(); });
+      document.addEventListener('click', (event) => {
+        if (!menu.classList.contains('is-open')) return;
+        if (!menu.contains(event.target) && !toggle.contains(event.target)) closeMenu();
+      });
+      window.addEventListener('resize', () => { if (window.innerWidth > 820) closeMenu(); });
+    })();
+  </script>
+
+</body>
+</html>

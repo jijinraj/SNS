@@ -1,0 +1,36 @@
+{
+  "posts": [
+    {
+      "slug": "example-future-json-post",
+      "published": false,
+      "category": "Car care",
+      "readTime": "5 min read",
+      "date": "2026-09-01",
+      "title": "Example future JSON-powered article",
+      "summary": "Set published to true and replace this example with a lightweight Journal article.",
+      "sections": [
+        {
+          "label": "Introduction",
+          "heading": "This is how a JSON article section is structured.",
+          "paragraphs": [
+            "Each section can have a label, heading and one or more paragraphs.",
+            "Use JSON-powered posts for lighter Journal content while keeping important SEO articles as standalone HTML pages."
+          ]
+        },
+        {
+          "label": "Optional extras",
+          "heading": "Lists and callouts are supported too.",
+          "paragraphs": [
+            "Keep the content concise and useful."
+          ],
+          "list": [
+            "First tip",
+            "Second tip",
+            "Third tip"
+          ],
+          "callout": "A short callout can be added to any section."
+        }
+      ]
+    }
+  ]
+}
